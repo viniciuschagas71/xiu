@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>❤️ EU TE AMO ANA BEATRIZ ❤️</title>
+<style>
+  /* Fundo preto e centralização */
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #000000 0%, #0d1a26 100%);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Canvas para estrelas */
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    display: block;
+  }
+
+  /* Texto central */
+  h1 {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-size: 5vw;
+    max-width: 90vw;
+    text-align: center;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #f0f8ff,
+      0 0 20px #f0f8ff,
+      0 0 40px #00bfff,
+      0 0 80px #00bfff;
+    animation: glow 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #f0f8ff,
+        0 0 20px #f0f8ff,
+        0 0 40px #00bfff,
+        0 0 80px #00bfff;
+    }
+    to {
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #add8e6,
+        0 0 30px #add8e6,
+        0 0 50px #1e90ff,
+        0 0 100px #1e90ff;
+    }
+  }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<h1>EU TE AMO ANA BEATRIZ ❤️</h1>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Estrelas em 3D simulando profundidade e movimento
+  const stars = [];
+  const STAR_COUNT = 250;
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  for (let i = 0; i < STAR_COUNT; i++) {
+    stars.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      z: randomRange(0.1, width),
+      size: randomRange(0.5, 1.5),
+    });
+  }
+
+  function animate() {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, width, height);
+
+    for (let star of stars) {
+      star.z -= 4;
+      if (star.z <= 0) {
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+        star.z = width;
+      }
+      const k = 128 / star.z;
+      const px = (star.x - width / 2) * k + width / 2;
+      const py = (star.y - height / 2) * k + height / 2;
+      if (px >= 0 && px <= width && py >= 0 && py <= height) {
+        const size = star.size * (1 - star.z / width) * 3;
+        ctx.fillStyle = 'white';
+        ctx.shadowColor = 'white';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(px, py, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+</body>
+</html>
